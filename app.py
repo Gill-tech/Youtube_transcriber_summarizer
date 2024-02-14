@@ -1,10 +1,17 @@
 import streamlit as st
-from summarizer import extract_transcript, generate_gemini_content
+from summarizer import extract_transcript, generate_general_summary, geneate_academic_summary, generate_keywords, create_contents
 
 
 st.title("Welcome to the YouTube Video Summarizer")
 
-st.write("This app will take in the transcript text of a youtube video and summarize the entire video and provide the important summary points within 200 to 500 words.")
+st.write("This app will take in link of a youtube video and based on your choice of use case, provides or create the important summary points.")
+
+# Create a radio button group with 'Academic' and 'Content Creation' options
+option = st.radio(
+   "What is your preference?",
+   ('General', 'Academic', 'Content Creation'))
+
+st.write(f'You selected {option}.')
 
 youtube_url = st.text_input("Enter the youtube video URL")
 
@@ -25,16 +32,32 @@ if st.button("Get Detailed Summary"):
         transcript = extract_transcript(youtube_url)
         # baloon to show successful extraction of the transcript
         st.balloons()
-
+    # cretaing a function to call the right function for chosen use cases
+    def select_method(option, transcript=transcript):
+        if option == 'General':
+            method = generate_general_summary(transcript)
+        elif option == "Academic":
+            method = geneate_academic_summary(transcript)
+        else:
+            method = create_contents(transcript)
+        return method
+    
     # if there is an error getting the transcript, display an error message
     if transcript == "Error":
         st.write("Error getting the transcript. Please check the video URL.")
     else:
+        # generating keywords
+        with st.spinner("Generating keywords ..."):
+            keywords = generate_keywords(transcript)
+
+        st.markdown(f"### Video Keywords")
+        st.write(keywords)
+
         # spinner to show that the summary is being generated
         with st.spinner("Getting the summary..."):
             # get the summary based on the transcript
             try:
-                summary = generate_gemini_content(transcript)
+                summary = select_method(option)
                 # baloon to show successful generation of the summary
                 st.balloons()
                 # a markdown to display the summary

@@ -9,9 +9,40 @@ from youtube_transcript_api import YouTubeTranscriptApi
 genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
 
 
-prompt = """You are a youtube video summarizer. You will take in the transcript test
-and summarizing the entire video and providing the important summary 
-points within 200 to 500 words. Please provide the summary of the text given here:  """
+gen_prompt = """You are a youtube video summarizer. You will take in the transcript text
+, you will summarize the entire video and provide the important summary 
+points. Please provide the summary of the text given here:  """
+
+keyword_extraction_prompt = """You are an experienced Youtube video keyword extractor. 
+You will take in the transcript text, properly analyze the texts,
+rank the keywords and extract the top 10 keywords.
+Please provide the top 10 keywords from the text given here:  """
+
+academic_prompts = """
+You are an experienced Youtube academic video summarizer.
+You method of summarizing academic videos is to take in the Youtube video transcript text,
+you take a look into the transcript and understand the main points of the video.
+You then create a summary in a detailed manner, providing the important summary points.
+The summary is placed in sections and subsections as per the video content. 
+Then finally present it in a well structured manner.
+
+Please provide the summary of the text given here: 
+"""
+
+######### Blog Content Prompts #########
+blog_content_prompts = """
+You are an experienced Youtube blog content creator.
+You method of creating blog content is to take in the Youtube video transcript text,
+you take a look into the transcript and understand the main points of the video.
+You then create 5 to 7 blog content points from the video transcript.
+
+You think about recent trends and topics that are popular in the industry corresponding to the video context.
+After several consideration and excellent research, you create the blog contents.
+You mention an attractive title for each blog, then the blog content will come under it. 
+For each blog content the maximum number of words is 150. Make sure they are blogs that are worth reading.
+
+Please provide the blog content points from the text given here: 
+"""
 
 # getting the transcript from the youtube video
 def extract_transcript(video_url):
@@ -28,8 +59,27 @@ def extract_transcript(video_url):
         return "Error"
 
 #getting the summary based on prompt and transcript
-def generate_gemini_content(transcript, prompt=prompt):
+def generate_general_summary(transcript, prompt=gen_prompt):
 
+    model = genai.GenerativeModel("gemini-pro")
+
+    response = model.generate_content(prompt+transcript)
+    return response.text
+
+def generate_keywords(transcript, prompt=keyword_extraction_prompt):
+
+    model = genai.GenerativeModel("gemini-pro")
+
+    response = model.generate_content(prompt+transcript)
+    return response.text
+
+def geneate_academic_summary(transcript, prompt=academic_prompts):
+    model = genai.GenerativeModel("gemini-pro")
+
+    response = model.generate_content(prompt+transcript)
+    return response.text
+
+def create_contents (transcript, prompt=blog_content_prompts):
     model = genai.GenerativeModel("gemini-pro")
 
     response = model.generate_content(prompt+transcript)
