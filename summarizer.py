@@ -30,6 +30,7 @@ def extract_transcript(video_url):
 #getting the summary based on prompt and transcript
 def generate_gemini_content(transcript, prompt=prompt):
 
-    model = genai.GenerationModel("gemini-pro")
+    model = genai.GenerativeModel("gemini-pro")
 
-    response = model.generate_content(prompt+transcript, max_length=500)
+    response = model.generate_content(prompt+transcript)
+    return response.text

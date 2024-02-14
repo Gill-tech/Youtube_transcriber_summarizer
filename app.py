@@ -9,26 +9,29 @@ st.write("This app will take in the transcript text of a youtube video and summa
 youtube_url = st.text_input("Enter the youtube video URL")
 
 # display the thumbnail of the video
-if youtube_url:
-    st.image(f"http://img.youtube.com/vi/{youtube_url.split('=')[1]}/0.jpg", use_column_width=True)
 
-
+# show the user the summary of the video
+st.write("Click the button below to get the summary of the video")
 if st.button("Get Detailed Summary"):
-    # a spinning animation to show the user transcript is being extracted
-    st.spinner("Getting the summary...")
+
+    # display the thumbnail of the video
+    st.markdown("### Video Thumbnail")
+    if youtube_url:
+        st.image(f"http://img.youtube.com/vi/{youtube_url.split('=')[1]}/0.jpg", use_column_width=True)
+
     # get the transcript from the youtube video
     transcript = extract_transcript(youtube_url)
     # baloon to show that transcript has being extracted
     st.balloons()
+    st.write()
     # if there is an error getting the transcript, display an error message
     if transcript == "Error":
         st.write("Error getting the transcript. Please check the video URL.")
     else:
         # spinner to show that the summary is being generated
+        st.spinner("Getting the summary...")
         # get the summary based on the transcript
         summary = generate_gemini_content(transcript)
-        # another baloon to show that the summary has being generated
-        st.balloons()
         # a markdown to display the summary
         st.markdown(f"### Detailed Summary")
         st.write(summary)
