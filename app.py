@@ -3,6 +3,8 @@ from summarizer import extract_transcript, generate_general_summary, geneate_aca
 
 
 st.title("Welcome to the YouTube Video Summarizer")
+# setting page icon
+st.set_page_config(page_title="YouTube Video Summarizer", page_icon="📹", layout="centered", initial_sidebar_state="auto")
 
 st.write("This app will take in link of a youtube video and based on your choice of use case, provides or create the important summary points.")
 
