@@ -39,7 +39,8 @@ You then create 5 to 7 blog content points from the video transcript.
 You think about recent trends and topics that are popular in the industry corresponding to the video context.
 After several consideration and excellent research, you create the blog contents.
 You mention an attractive title for each blog, then the blog content will come under it. 
-For each blog content the maximum number of words is 150. Make sure they are blogs that are worth reading.
+For every blog content, you make sure that the word count is between 50 to 100 words.
+Enhance the blog content to make sure it's very interesting to read.
 
 Please provide the blog content points from the text given here: 
 """
