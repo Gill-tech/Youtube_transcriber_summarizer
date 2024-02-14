@@ -1,5 +1,6 @@
 import streamlit as st
 from summarizer import extract_transcript, generate_general_summary, geneate_academic_summary, generate_keywords, create_contents
+from youtube_id_extractor import extract_video_id
 
 
 st.set_page_config(page_title="YouTube Video Summarizer", page_icon="📹", layout="centered", initial_sidebar_state="auto")
@@ -27,7 +28,8 @@ if st.button("Get Detailed Summary"):
     # display the thumbnail of the video
     st.markdown("### Video Thumbnail")
     if youtube_url:
-        st.image(f"http://img.youtube.com/vi/{youtube_url.split('=')[1]}/0.jpg", use_column_width=True)
+        youtube_id = extract_video_id(youtube_url)
+        st.image(f"http://img.youtube.com/vi/{youtube_id}/0.jpg", use_column_width=True)
 
     # a spinner to show that the transcript is being extracted
     with st.spinner("Getting the transcript..."):
