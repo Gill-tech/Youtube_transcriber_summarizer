@@ -6,7 +6,6 @@ from youtube_id_extractor import extract_video_id
 st.set_page_config(page_title="YouTube Video Summarizer", page_icon="📹", layout="centered", initial_sidebar_state="auto")
 
 st.title("Welcome to the YouTube Video Summarizer")
-# setting page icon
 
 st.write("This app will take in link of a youtube video and based on your choice of use case, provides or create the important summary points.")
 

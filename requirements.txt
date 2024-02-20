@@ -3,3 +3,10 @@ streamlit
 google-generativeai
 python-dotenv
 pathlib
+langchain
+unstructured
+openai
+chromadb
+llama-index
+langchain-google-genai
+langchain-community

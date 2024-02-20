@@ -1,3 +1,6 @@
 .env
 .conda
 /__pycache__/
+pdf_extractor.py
+pdfs/
+Youtube_Chat.py
