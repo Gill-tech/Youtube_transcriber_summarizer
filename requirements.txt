@@ -3,10 +3,10 @@ streamlit
 google-generativeai
 python-dotenv
 pathlib
-langchain
+langchain==0.1.9
 unstructured
 openai
-chromadb
+faiss-cpu
 llama-index
-langchain-google-genai
+langchain-google-genai==0.0.9
 langchain-community
