@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from utils import extract_transcript
 from youtube_id_extractor import extract_video_id
 from yt_QandA_helper_function import create_chunk_and_vector_db, user_input
-from prefect import task, flow
+# from prefect import task, flow
 
 
 load_dotenv()
@@ -18,32 +18,7 @@ st.set_page_config("Chat With Youtube Videos")
 st.title("Chat with Youtube Videos using Gemini")
 
 
-
-# @task(log_prints=True, cache_result_in_memory=True, task_run_name="Extract Transcript", retry_delay_seconds=5,tags=["youtube", "transcript"])
-# def extract_and_process(youtube_url):
-#     # Extract video ID from YouTube URL
-#     youtube_id = extract_video_id(youtube_url)
-    
-#     # If YouTube ID is valid
-#     if youtube_id:
-
-#         # Extract transcript from the YouTube video
-#         transcript = extract_transcript(youtube_url)
-
-#         # If transcript extraction is successful
-#         if transcript != "Error":
-#             # Save transcript to a text file
-#             with open('transcript.txt', 'w') as f:
-#                 f.write(transcript)
-#             # Process the transcript
-#             with st.spinner("Preparing for Q & A..."):
-#                 create_chunk_and_vector_db()
-#                 st.balloons()
-#         else:
-#             st.write("Error getting the transcript. Please check the video URL.")
-#     # Return thumbnail URL and transcript
-#     return  transcript
-@flow(name="Youtube Rag System", cache_result_in_memory=True)
+# @flow(name="Youtube Rag System")
 def main():
     # Initialize session_state.transcript
     if "transcript" not in st.session_state:
@@ -53,36 +28,40 @@ def main():
     youtube_url = st.text_input("Enter the YouTube video URL or link")
 
     # show the user the summary of the video
-    st.write("Click the button below to get the summary of the video")
+    st.write("Click the button below to process the YT video")
 
     if st.button("process video"):
         if youtube_url is None or youtube_url.strip() == "":
             st.write("The input is empty, enter a valid URL.")
         else:
             youtube_id = extract_video_id(youtube_url)
-    
+
             # If YouTube ID is valid
             if youtube_id:
                 # Extract transcript from the YouTube video
                 with st.spinner("Getting the transcript..."):
-                    # Extract transcript from the YouTube video
-                    transcript = extract_transcript(youtube_url)
-                
-                    # If transcript extraction is successful
-                    if transcript != "Error":
-                        # Save transcript to a text file
-                        with open('transcript.txt', 'w') as f:
-                            f.write(transcript)
-                        st.balloons()
-                        # Process the transcript
-                        with st.spinner("Preparing for Q & A..."):
-                            create_chunk_and_vector_db()
-                            st.balloons()
-                    else:
-                        st.write("Error getting the transcript. Please check the video URL.")
-            # Store state in session_state
-            st.session_state.transcript = transcript
-            
+                    try:
+                        transcript = extract_transcript(youtube_url)
+                    except Exception as e:
+                        st.write("Error getting the transcript:", str(e))
+                        transcript = "Error"
+
+                # If transcript extraction is successful
+                if transcript != "Error":
+                    # Save transcript to a text file
+                    with open('transcript.txt', 'w') as f:
+                        f.write(transcript)
+                    st.balloons()
+
+                    # Process the transcript
+                    with st.spinner("Preparing for Q & A..."):
+                        create_chunk_and_vector_db()
+                    st.balloons()
+
+                    # Store state in session_state
+                    st.session_state.transcript = transcript
+                else:
+                    st.write("Error getting the transcript. Please check the video URL.")
 
     # Display a message while waiting for the transcript to be generated
     if st.session_state.transcript is None and "processing" not in st.session_state:

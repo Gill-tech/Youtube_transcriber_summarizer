@@ -1,12 +1,12 @@
 import streamlit as st
 from utils import extract_transcript, generate_keywords, children_reccomendation
 from youtube_id_extractor import extract_video_id
-from prefect import flow
+# from prefect import flow
 
 
 st.title("YouTube Video Children Recommender")
 
-@flow(name='Children_Recommender')
+# @flow(name='Children_Recommender')
 def main():
     # URL entry
     youtube_url = st.text_input("Enter the youtube video URL or link")

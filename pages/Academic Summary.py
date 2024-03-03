@@ -1,12 +1,12 @@
 import streamlit as st
 from utils import extract_transcript, geneate_academic_summary, generate_keywords
 from youtube_id_extractor import extract_video_id
-from prefect import flow
+# from prefect import flow
 
 # Title
 st.title("YouTube Video Academic Summarizer")
 
-@flow(name='Academic_Summary')
+# @flow(name='Academic_Summary')
 def main():
     
     # URL entry

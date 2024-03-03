@@ -1,14 +1,14 @@
 import streamlit as st
 from utils import extract_transcript, generate_general_summary, generate_keywords
 from youtube_id_extractor import extract_video_id
-from prefect import flow
+# from prefect import flow
 
 
 
 # Page title
 st.title("YouTube Video General Summarizer")
 
-@flow(name='General Summary')
+# @flow(name='General Summary')
 def main():
 # URL entry
     youtube_url = st.text_input("Enter the youtube video URL or link")

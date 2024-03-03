@@ -9,14 +9,14 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.document_loaders import TextLoader
-from prefect import task
+# from prefect import task, flow
 
 load_dotenv()
 
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 # create vector db
-@task(log_prints=True, cache_result_in_memory=True, task_run_name="Create Chunk and Vector DB", retry_delay_seconds=5, tags=["youtube", "transcript"])
+# @task(log_prints=True, cache_result_in_memory=True, task_run_name="Create Chunk and Vector DB", retry_delay_seconds=5, tags=["youtube", "transcript"])
 def create_chunk_and_vector_db():
     loader = TextLoader("transcript.txt")
     documents = loader.load()
@@ -27,7 +27,7 @@ def create_chunk_and_vector_db():
     db = FAISS.from_documents(docs, embeddings)
     db.save_local("faiss_index")
 
-@task(log_prints=True, cache_result_in_memory=True, task_run_name="Get Conversational Chain", retry_delay_seconds=5, tags=["youtube", "conversational"])
+# @task(log_prints=True, cache_result_in_memory=True, task_run_name="Get Conversational Chain", retry_delay_seconds=5, tags=["youtube", "conversational"])
 def get_conversational_chain():
     prompt_template = """
     Answer the question as detailed as possible from the provided context, make sure to provide all the details and explain it better that it is in the context, 
@@ -47,7 +47,7 @@ def get_conversational_chain():
 
     return chain
 
-@task(log_prints=True, cache_result_in_memory=True, task_run_name="User Input", retry_delay_seconds=5, tags=["youtube", "user_input"])
+# @flow(name="User Input", cache_result_in_memory=True)
 def user_input(user_question):
     embeddings = GoogleGenerativeAIEmbeddings(model = "models/embedding-001", task_type="retrieval_document")
     

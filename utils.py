@@ -6,7 +6,7 @@ import os
 
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_id_extractor import extract_video_id
-from prefect import task
+# from prefect import task
 
 genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
 
@@ -121,7 +121,7 @@ Here's what you'll do:
 """
 
 # getting the transcript from the youtube video
-@task(log_prints=True, cache_result_in_memory=True, task_run_name="Extract Transcript", retry_delay_seconds=5, tags=["youtube", "transcript"])
+# @task(log_prints=True, cache_result_in_memory=True, task_run_name="Extract Transcript", retry_delay_seconds=5, tags=["youtube", "transcript"])
 def extract_transcript(video_url):
     try:
         video_id = extract_video_id(video_url)
@@ -136,7 +136,7 @@ def extract_transcript(video_url):
         return "Error"
 
 #getting the summary based on prompt and transcript
-@task(log_prints=True, cache_result_in_memory=True, task_run_name="Generate General Summary", retry_delay_seconds=5, tags=["youtube", "summary"])
+# @task(log_prints=True, task_run_name="Generate General Summary")
 def generate_general_summary(transcript, prompt=gen_prompt):
 
     model = genai.GenerativeModel("gemini-pro")
@@ -144,7 +144,7 @@ def generate_general_summary(transcript, prompt=gen_prompt):
     response = model.generate_content(prompt+transcript)
     return response.text
 
-@task(log_prints=True, cache_result_in_memory=True, task_run_name="Generate Keywords", retry_delay_seconds=5, tags=["youtube", "keywords"])
+# @task(log_prints=True, cache_result_in_memory=True, task_run_name="Generate Keywords", retry_delay_seconds=5, tags=["youtube", "keywords"])
 def generate_keywords(transcript, prompt=keyword_extraction_prompt):
 
     model = genai.GenerativeModel("gemini-pro")
@@ -152,21 +152,21 @@ def generate_keywords(transcript, prompt=keyword_extraction_prompt):
     response = model.generate_content(prompt+transcript)
     return response.text
 
-@task(log_prints=True, cache_result_in_memory=True, task_run_name="Generate Academic Summary", retry_delay_seconds=5, tags=["youtube", "academic"])
+# @task(log_prints=True, cache_result_in_memory=True, task_run_name="Generate Academic Summary", retry_delay_seconds=5, tags=["youtube", "academic"])
 def geneate_academic_summary(transcript, prompt=academic_prompts):
     model = genai.GenerativeModel("gemini-pro")
 
     response = model.generate_content(prompt+transcript)
     return response.text
 
-@task(log_prints=True, cache_result_in_memory=True, task_run_name="Create Contents", retry_delay_seconds=5, tags=["youtube", "content"])
+# @task(log_prints=True, cache_result_in_memory=True, task_run_name="Create Contents", retry_delay_seconds=5, tags=["youtube", "content"])
 def create_contents (transcript, prompt=blog_content_prompts):
     model = genai.GenerativeModel("gemini-pro")
 
     response = model.generate_content(prompt+transcript)
     return response.text
 
-@task(log_prints=True, cache_result_in_memory=True, task_run_name="Children Recommendation", retry_delay_seconds=5, tags=["youtube", "children"])
+# @task(log_prints=True, cache_result_in_memory=True, task_run_name="Children Recommendation", retry_delay_seconds=5, tags=["youtube", "children"])
 def children_reccomendation (transcript, prompt=children_prompt):
     model = genai.GenerativeModel("gemini-pro")
 
