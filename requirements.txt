@@ -10,3 +10,4 @@ faiss-cpu
 llama-index
 langchain-google-genai==0.0.9
 langchain-community
+prefect

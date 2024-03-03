@@ -1,5 +1,5 @@
 import streamlit as st
-from summarizer import extract_transcript, generate_general_summary, geneate_academic_summary, generate_keywords, create_contents
+from utils import extract_transcript, generate_general_summary, geneate_academic_summary, generate_keywords, create_contents
 from youtube_id_extractor import extract_video_id
 
 

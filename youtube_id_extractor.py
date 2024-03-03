@@ -1,5 +1,7 @@
 import re
+from prefect import task
 
+@task(log_prints=True, cache_result_in_memory=True, task_run_name="Extract Transcript", retry_delay_seconds=5, tags=["youtube", "transcript"])
 def extract_video_id(url):
     # Regular expression to match a YouTube video ID
     regex = r'(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([^"&?\/ ]{11})'
